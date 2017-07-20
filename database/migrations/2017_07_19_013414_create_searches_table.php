@@ -17,7 +17,6 @@ class CreateSearchesTable extends Migration
             $table->increments('id');
             $table->string('selected')->nullable();
             $table->string('query')->nullable();
-            $table->json('articles')->nullable();
             $table->integer('count')->unsigned()->default(1);
             $table->timestamps();
         });
