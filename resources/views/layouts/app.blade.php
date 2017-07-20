@@ -43,9 +43,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('article.create')}}">포스트 작성</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('article.create')}}">포스트 관리</a>
-                    </li>
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
@@ -81,30 +78,21 @@
                             </ul>
                         </li>
                     @endif
-                    {{--@php--}}
-                        {{--switch ($login_error) {--}}
-                        {{--case 1:--}}
-                            {{--echo "`E-mail` input is empty!";--}}
-                            {{--break;--}}
-                        {{--case 2:--}}
-                            {{--echo "`Password` input is empty!";--}}
-                        {{--}--}}
-                    {{--@endphp--}}
                     <li>
-                        <Form class="form-inline form-group-lg" action="{{route('article.search.store')}}"
+                        <Form class="form-inline form-group-lg" action="{{route('search.articles.store')}}"
                               method="POST">
                             {{csrf_field()}}
                             @php ($selects = \App\Models\article\Select::get())
-                            <select class="form-control input-lg" name="select">
-                                @foreach($selects as $select)
-                                    <option value="{{ $select->id }}">{{$select->query}}</option>
-                                @endforeach
-                            </select>
-                            <input class="form-control {{ $errors->has('query')?'has-error':'' }}" type="text"
-                                   placeholder="Search" name="query"
-                                   value="{{old('query', isset($query) ? $query : null) }}">
-                            {!! $errors->first('query', '<span class="form-error">:message</span>') !!}
-                            <button class="btn btn-outline-inf btn-lg btn-success" type="submit">검색</button>
+                                <select class="form-control input-lg" name="select">
+                                    @foreach($selects as $select)
+                                        <option value="{{ $select->value }}">{{$select->query}}</option>
+                                    @endforeach
+                                </select>
+                                <input class="form-control {{ $errors->has('query')?'has-error':'' }}" type="text"
+                                       placeholder="Search" name="query"
+                                       value="{{old('query', isset($query) ? $query : null) }}">
+                                {!! $errors->first('query', '<span class="form-error">:message</span>') !!}
+                                <button class="btn btn-outline-inf btn-lg btn-success" type="submit">검색</button>
                         </form>
                     </li>
                 </ul>

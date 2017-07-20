@@ -34,7 +34,7 @@
                 <ul class="pagination">
                     @for($i = 1; $i <$pagination+1; $i++)
                         <li>
-                            <a href="{{route('article.showLatestArticles',$i)}}">{{$i}}</a>
+                            <a href="{{route('search.articles.show',[$select, $query, $i])}}">{{$i}}</a>
                         </li>
                     @endfor
                 </ul>

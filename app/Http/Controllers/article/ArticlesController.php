@@ -11,12 +11,10 @@ use Intervention\Image\Facades\Image;
 
 class ArticlesController extends Controller
 {
-    /**
-     * Show all articles
-     * @return view return blade view index.
-     */
-
     private $lastArticles;
+    /* $lastArticles maxvalue = 12*/
+    /* $perPage maxvalue = 12*/
+    /* if($pagination value == $perPage*)*/
     private $perPage;
     private $pagination;
 
@@ -117,6 +115,13 @@ class ArticlesController extends Controller
         }
     }
 
+    public function showLatestArticles($page)
+    {
+        $pagination = $this->getPagination();
+        $articles = Article::get()->forPage($page, $this->getPerPage());
+        return view('article.index', compact(['pagination', 'articles']));
+    }
+
     public function destory($id)
     {
         $article = Article::findOrFail($id);
@@ -126,14 +131,8 @@ class ArticlesController extends Controller
         return redirect(route('article.index'));
     }
 
-    public function getView($page)
-    {
-        $pagination = $this->getPagination();
-        $articles = Article::get()->forPage($page, $this->getPerPage());
-        return view('article.index', compact(['pagination', 'articles']));
-    }
-
-    private function setLastArticles($articles)
+    public
+    function setLastArticles($articles)
     {
         $latestArticles = -1 * $articles;
         if (Article::get()->count() < $articles) {
@@ -143,22 +142,38 @@ class ArticlesController extends Controller
         }
     }
 
-    private function getLastArticles()
+    /**
+     * @return mixed
+     */
+    public
+    function getLastArticles()
     {
         return $this->lastArticles;
     }
 
-    private function setPerpage($perPage)
+    /**
+     * @param $perPage
+     */
+    public
+    function setPerpage($perPage)
     {
         $this->perPage = $perPage;
     }
 
-    private function getPerpage()
+    /**
+     * @return mixed
+     */
+    public
+    function getPerpage()
     {
         return $this->perPage;
     }
 
-    private function setPagination($pagination)
+    /**
+     * @param $pagination
+     */
+    public
+    function setPagination($pagination)
     {
         try {
             $this->pagination = ceil(Article::get()->count() / $pagination);
@@ -167,8 +182,13 @@ class ArticlesController extends Controller
         }
     }
 
-    private function getPagination()
+    /**
+     * @return mixed
+     */
+    public
+    function getPagination()
     {
         return $this->pagination;
     }
+
 }
