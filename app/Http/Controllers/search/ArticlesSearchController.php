@@ -25,6 +25,7 @@ class ArticlesSearchController extends Controller
     /**
      * @param Request $request
      * @return string
+     *
      */
     public function store(Request $request)
     {
@@ -35,7 +36,7 @@ class ArticlesSearchController extends Controller
         $query = $request->__get('query');
         $this->setPagination(DB::table('articles')
             ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query . '%')
-            ->get(),12);
+            ->get(), 12);
         $pagination = $this->getPagination();
         $articles = DB::table('articles')
             ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query . '%')
@@ -52,12 +53,13 @@ class ArticlesSearchController extends Controller
                         'selected' => $select,
                     ]);
                 } else {
-                    Search::all()
+                    $update = Search::all()
                         ->where('query', '=', $query)
                         ->where('selected', '=', $select)
-                        ->first()->update([
-                            'count' => +1,
-                        ]);
+                        ->first();
+                    $update->update([
+                        'count' => $update->count + 1,
+                    ]);
                 }
                 return view('article.search.show', compact(['select', 'query', 'articles', 'pagination']));
         };
@@ -74,7 +76,7 @@ class ArticlesSearchController extends Controller
             case 0:
                 $this->setPagination(DB::table('articles')
                     ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query . '%')
-                    ->get(),12);
+                    ->get(), 12);
                 $pagination = $this->getPagination();
                 $articles = Article::get()
                     ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query)
