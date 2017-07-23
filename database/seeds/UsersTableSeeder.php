@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class UserTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,9 +12,10 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         App\Models\User::create([
-            'name' => '홍진섭',
-            'email' => 'hamunstorys@gmail.com',
-            'password' => bcrypt('0000'),
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('000000'),
+            'activated' => 1
         ]);
     }
 }

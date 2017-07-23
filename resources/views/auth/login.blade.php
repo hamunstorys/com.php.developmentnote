@@ -7,9 +7,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">로그인</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                        <form class="form-horizontal" method="POST" action="{{ route('users.sessions.store') }}">
                             {{ csrf_field() }}
-
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <label for="email" class="col-md-4 control-label">이메일 주소</label>
 
@@ -49,14 +48,12 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
                                         로그인
                                     </button>
-
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link" href="{{route('users.remind.create')}}">
                                         비밀번호를 잊어버리셨습니까?
                                     </a>
                                 </div>

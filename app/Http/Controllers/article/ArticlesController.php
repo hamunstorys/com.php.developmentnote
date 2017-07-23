@@ -85,7 +85,6 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-
         $article = Article::findOrFail($id);
         return view('article.edit', compact('article'));
     }
@@ -97,32 +96,29 @@ class ArticlesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'thumbnail' => 'mimes:jpeg,bmp,png,svg|max:2048',
             'subject' => 'required',
             'content' => 'required'
         ]);
 
         $article = Article::findOrFail($id);
-        $article->fill($request->except('thumbnail'));
-        if ($article->save()) {
-            if ($request->hasFile('thumbnail')) {
-                Storage::delete('public/articles/thumbnails/' . $article->id . '/' . 'thumbnail.jpg');
-                Image::make($request->thumbnail)->resize(384, 288)->save('storage/articles/thumbnails/' . $article->id . '/thumbnail.jpg');
-            }
+        $article->fill($request->all());
+        $article->save();
 
-            flash('게시물이 수정되었습니다.');
-            return redirect(route('article.index'));
-        }
+        flash('게시물이 수정되었습니다.');
+        return redirect(route('article.index'));
     }
 
-    public function showLatestArticles($page)
+
+    public
+    function showLatestArticles($page)
     {
         $pagination = $this->getPagination();
         $articles = Article::get()->forPage($page, $this->getPerPage());
         return view('article.index', compact(['pagination', 'articles']));
     }
 
-    public function destory($id)
+    public
+    function destory($id)
     {
         $article = Article::findOrFail($id);
         $article->delete();

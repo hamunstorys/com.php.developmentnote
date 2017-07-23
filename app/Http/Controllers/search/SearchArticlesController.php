@@ -9,7 +9,7 @@ use App\Models\article\Select;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ArticlesSearchController extends Controller
+class SearchArticlesController extends Controller
 {
     /* $perPage maxvalue = 12*/
     /* if($pagination value == $perPage*)*/
