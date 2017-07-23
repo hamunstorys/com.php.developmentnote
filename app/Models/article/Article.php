@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\article;
+namespace App\Models\Article;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +30,12 @@ class Article extends Model
 
     public function comments()
     {
-        return $this->belongsToMany(Comment::class)->withPivot('id');
+        return $this->belongsToMany(Comment::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::
+        class);
     }
 }
