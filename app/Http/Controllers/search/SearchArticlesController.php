@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Search;
 
 use App\Http\Controllers\Controller;
-use App\Models\article\Article;
-use App\Models\article\Search;
-use App\Models\article\Select;
+use App\Models\Article\Article;
+use App\Models\Article\Search;
+use App\Models\Article\Select;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,30 +32,29 @@ class SearchArticlesController extends Controller
         $this->validate($request, [
             'query' => 'required'
         ]);
-        $select = $request->select;
+
         $query = $request->__get('query');
-        $this->setPagination(DB::table('articles')
-            ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query . '%')
-            ->get(), 12);
+        $searchedArticles = DB::table('articles')
+            ->where(Select::get()->where('value', '=', $request->select)->first()->query, 'like', $query . '%')
+            ->get();
+        $this->setPagination($searchedArticles, 12);
         $pagination = $this->getPagination();
-        $articles = DB::table('articles')
-            ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query . '%')
-            ->get()->forPage(1, $this->getPerPage());
-        switch ($select) {
+        $articles = $searchedArticles->forPage(1, $this->getPerPage());
+        switch ($request->select) {
             case 0:
                 if (Search::all()
                         ->where('query', '=', $query)
-                        ->where('selected', '=', $select)
+                        ->where('selected', '=', $request->select)
                         ->first() == null
                 ) {
                     Search::create([
                         'query' => $query,
-                        'selected' => $select,
+                        'selected' => $request->select,
                     ]);
                 } else {
                     $update = Search::all()
                         ->where('query', '=', $query)
-                        ->where('selected', '=', $select)
+                        ->where('selected', '=', $request->select)
                         ->first();
                     $update->update([
                         'count' => $update->count + 1,
@@ -72,11 +71,13 @@ class SearchArticlesController extends Controller
      */
     public function show($select, $query, $page)
     {
+        $searchedArticles = DB::table('articles')
+            ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query . '%')
+            ->get();
+
         switch ($select) {
             case 0:
-                $this->setPagination(DB::table('articles')
-                    ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query . '%')
-                    ->get(), 12);
+                $this->setPagination($searchedArticles, 12);
                 $pagination = $this->getPagination();
                 $articles = Article::get()
                     ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query)
@@ -113,8 +114,8 @@ class SearchArticlesController extends Controller
     {
         try {
             $this->pagination = ceil($articles->count() / $pagination);
-        } catch (\DivisionByZeroError $error) {
-            $this->pagination = Article::get()->count();
+        } catch (\Error $error) {
+
         }
     }
 

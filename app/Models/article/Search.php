@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\article;
+namespace App\Models\Article;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,12 +11,6 @@ class Search extends Model
     protected $fillable = [
         'selected',
         'query',
-        'articles',
         'count',
     ];
-
-    protected $casts = [
-        'features' => 'json'
-    ];
-
 }

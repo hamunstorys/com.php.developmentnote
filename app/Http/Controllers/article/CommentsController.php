@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\article;
+namespace App\Http\Controllers\Article;
 
 use App\Http\Controllers\Controller;
-use App\Models\article\Article;
-use App\Models\article\Comment;
+use App\Models\Article\Article;
+use App\Models\Article\Comment;
 use Illuminate\Http\Request;
 
 class CommentsController extends Controller

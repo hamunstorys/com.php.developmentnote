@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\article\Article;
+use App\Models\Article\Article;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 

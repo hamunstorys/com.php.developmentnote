@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\article;
+namespace App\Http\Controllers\Article;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Models\article\Article;
+use App\Models\Article\Article;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 

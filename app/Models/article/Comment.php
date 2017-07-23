@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\article;
+namespace App\Models\Article;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +15,6 @@ class Comment extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(Article::class)->withPivot('id');
+        return $this->belongsToMany(Article::class);
     }
 }
