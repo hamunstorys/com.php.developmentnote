@@ -3,37 +3,48 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/article';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest', ['except' => 'destroy']);
+    }
+
+    public function create()
+    {
+        return view('auth.login');
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        if (!auth()->attempt($request->only('email', 'password'), $request->has('remember'))) {
+            flash('이메일 또는 비밀번호가 맞지 않습니다.');
+            return back()->withInput();
+        }
+
+        if (!auth()->user()->activated) {
+            auth()->logout();
+            flash('정상적으로 가입절차가 완료 되었는 지 확인해주세요.');
+            return back()->withInput();
+        }
+
+        flash('로그인 되었습니다!');
+        return redirect()->route('index');
+
+    }
+
+    public function destroy()
+    {
+        auth()->logout();
+        flash('로그아웃 되었습니다.');
+        return redirect('/');
     }
 }
+
