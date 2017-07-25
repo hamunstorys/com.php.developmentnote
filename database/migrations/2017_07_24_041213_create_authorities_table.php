@@ -41,7 +41,7 @@ class CreateAuthoritiesTable extends Migration
     public function down()
     {
         Schema::table('authorities', function (Blueprint $table) {
-            $table->dropColumn('authorities_user_id_foreign');
+            $table->dropForeign('authorities_user_id_foreign');
         });
 
         Schema::dropIfExists('authorities');

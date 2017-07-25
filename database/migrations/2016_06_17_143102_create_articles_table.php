@@ -32,7 +32,7 @@ class CreateArticlesTable extends Migration
     public function down()
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->dropForgien('articles_user_id_foreign');
+            $table->dropForeign('articles_user_id_foreign');
         });
 
         Schema::drop('articles');
