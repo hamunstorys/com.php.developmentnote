@@ -63,18 +63,23 @@ class ArticlesController extends Controller
             'content' => 'required'
         ]);
         $user = $request->user();
-        $article = new Article;
-        $article->fill($request->except('thumbnail'));
-        $user->articles()->save($article);
-        if ($article->save()) {
-            if ($request->hasFile('thumbnail')) {
-                Storage::makeDirectory('public/articles/thumbnails/' . $article->id);
-                Image::make($request->thumbnail)->resize(384, 288)->save('storage/articles/thumbnails/' . $article->id . '/thumbnail.jpg');
-            }
 
-            flash('게시물이 작성되었습니다.');
-            return redirect(route('article.index'));
+        $article = new Article;
+        $article->fill([
+            'subject' => $request->get('subject'),
+            'content' => $request->get('content'),
+        ]);
+        $user->articles()->save($article);
+        $article->save();
+
+        if ($request->hasFile('thumbnail')) {
+            Storage::makeDirectory('public/articles/thumbnails/' . $article->id);
+            Image::make($request->thumbnail)->resize(384, 288)->save('storage/articles/thumbnails/' . $article->id . '/thumbnail.jpg');
         }
+
+        flash('게시물이 작성되었습니다.');
+        return redirect(route('article.index'));
+
     }
 
     /**
@@ -99,8 +104,7 @@ class ArticlesController extends Controller
         ]);
 
         $article = Article::findOrFail($id);
-        $article->fill($request->all());
-        $article->save();
+        $article->update($request->all());;
 
         flash('게시물이 수정되었습니다.');
         return redirect(route('article.index'));

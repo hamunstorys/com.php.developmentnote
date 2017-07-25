@@ -12,7 +12,6 @@
             </div>
         </div>
         <!-- /.row -->
-
         <!-- Projects Row -->
         <div class="row">
             @foreach($articles as $article)

@@ -34,7 +34,6 @@
                             <textarea name="content" id="content">{{old('content')}}</textarea>
                             {!! $errors->first('content', '<span class="form-error">:message</span>') !!}
                         </div>
-
                         <div class="form-group row" style="text-align: center">
                             <div class="col-xs-12">
                                 <div class="text-center">

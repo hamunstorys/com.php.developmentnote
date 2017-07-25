@@ -56,6 +56,7 @@
                                     <li><a href="{{route('users.register.create')}}">회원 가입</a></li>
                                     <li><a href="{{route('users.remind.create')}}">비밀번호 초기화</a>
                                 </ul>
+                            </a>
                         </li>
                     @else
                         <li class="dropdown">

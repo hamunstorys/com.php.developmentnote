@@ -36,8 +36,7 @@
                     <div class="card-block">
                         <Form action="{{route('comment.store')}}" method="post">
                             {{csrf_field()}}
-                            <input type="hidden" name="article" value="{{$article->id}}">
-                            <input type="hidden" name="name" value="{{auth()->user()->__get('name')}}">
+                            <input type="hidden" name="id" value="{{$article->id}}">
                             <div class="form-group {{ $errors->has('comment')?'has-error':'' }}">
                                 <textarea name="comment" class="form-control" rows="3"></textarea>
                                 {!! $errors->first('comment', '<span class="form-error">:message</span>') !!}
@@ -52,7 +51,7 @@
                     <div class="media mb-4">
                         <div class="media-body">
                             <h5 class="mt-0">
-                                작성자 {{$comment->name}}
+                                작성자 {{$comment->user()->getResults()->name}}
                                 <div class="pull-right">
                                     {!! Form::model($comment, ['route' => ['comment.destroy', $comment->id], 'method' => 'DELETE']) !!}
                                     {!! Form::submit('삭제', array('class' => 'btn-sm btn-primary')) !!}
@@ -70,8 +69,6 @@
                     </div>
                 @endforeach
             </div>
-
-
             <!-- Sidebar Widgets Column -->
             <div class="col-md-4">
                 <!-- Search Widget -->

@@ -32,10 +32,9 @@ class SearchArticlesController extends Controller
         $this->validate($request, [
             'query' => 'required'
         ]);
-
+        $select = $request->get('select');
         $query = $request->__get('query');
-        $searchedArticles = DB::table('articles')
-            ->where(Select::get()->where('value', '=', $request->select)->first()->query, 'like', $query . '%')
+        $searchedArticles = DB::table('articles')->where(Select::get()->where('value', '=', $request->select)->first()->query, 'like', $query . '%')
             ->get();
         $this->setPagination($searchedArticles, 12);
         $pagination = $this->getPagination();

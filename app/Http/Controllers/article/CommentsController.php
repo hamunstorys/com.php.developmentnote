@@ -39,9 +39,14 @@ class CommentsController extends Controller
             'comment' => 'required',
         ]);
 
-        $article = Article::findOrFail($request->article);
+        $article = Article::findOrFail($request->get('id'));
+        $user = $request->user();
+
         $comment = new Comment;
-        $comment->fill($request->except('article'));
+        $comment->fill([
+            'comment' => $request->comment,
+        ]);
+        $user->comments()->save($comment);
         $comment->save();
         $article->comments()->attach($comment);
 

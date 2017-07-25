@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Article::class);
+    }
+
     /* level 0 */
     public function isAdmin()
     {
