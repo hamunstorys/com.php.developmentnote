@@ -20,8 +20,8 @@ class LoginController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required|min:6'
+            'email' => 'required|email|max:320',
+            'password' => 'required|min:6|max:255'
         ]);
 
         if (!auth()->attempt($request->only('email', 'password'), $request->has('remember'))) {

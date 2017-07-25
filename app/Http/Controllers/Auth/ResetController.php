@@ -17,8 +17,8 @@ class ResetController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email|exists:users',
-            'password' => 'required|confirmed',
+            'email' => 'required|email|exists:users|max:320',
+            'password' => 'required|confirmed|max:255',
             'token' => 'required'
         ]);
 

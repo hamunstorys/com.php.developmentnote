@@ -23,19 +23,9 @@ class Article extends Model
     ];
 
     /* Eloquent Relation */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function comments()
     {
         return $this->belongsToMany(Comment::class);
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany(Category::
-        class);
-    }
 }

@@ -23,7 +23,7 @@ class RemindController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email|exists:users'
+            'email' => 'required|email|exists:users|max:320'
         ]);
 
         $email = $request->get('email');

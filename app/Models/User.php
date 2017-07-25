@@ -16,9 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'confirm_code', 'activated'
-    ];
-
+        'name', 'email', 'password', 'confirm_code', 'activated'];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -30,8 +28,13 @@ class User extends Authenticatable
 
     protected $casts = ['activated' => 'boolean',];
 
-    public function articles()
+    public function Authorities()
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany(Authority::class);
+    }
+
+    public function isAdmin()
+    {
+
     }
 }

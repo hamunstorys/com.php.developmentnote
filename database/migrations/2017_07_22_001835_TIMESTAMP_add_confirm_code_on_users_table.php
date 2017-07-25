@@ -26,6 +26,6 @@ class TIMESTAMPAddConfirmCodeOnUsersTable extends Migration
      */
     public function down()
     {
-        
+
     }
 }
