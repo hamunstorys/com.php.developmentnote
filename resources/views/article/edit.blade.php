@@ -9,7 +9,6 @@
                     {{ Form::model($article, ['route' => ['article.update', $article->id], 'method' => 'POST']) }}
                     {{csrf_field()}}
                     <input type="hidden" name="_method" value="PUT">
-                    <input type="hidden" name="name" value="{{auth()->user()->__get('name')}}">
                     <div class="form-group">
                         <label class="control-label">
                             게시물 수정

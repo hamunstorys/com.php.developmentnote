@@ -8,7 +8,6 @@
                 <div class="col-md-8 col-sm-8 col-xs-12">
                     <Form action="{{route('article.store')}}" enctype="multipart/form-data" method="post">
                         {!!csrf_field()!!}
-                        <input type="hidden" name="name" value="{{auth()->user()->__get('name')}}">
                         <div class="form-group">
                             <label class="control-label">
                                 게시물 작성

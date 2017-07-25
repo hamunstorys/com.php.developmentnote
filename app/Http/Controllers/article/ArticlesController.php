@@ -62,7 +62,7 @@ class ArticlesController extends Controller
             'subject' => 'required',
             'content' => 'required'
         ]);
-        $user = auth()->user();
+        $user = $request->user();
         $article = new Article;
         $article->fill($request->except('thumbnail'));
         $user->articles()->save($article);
@@ -113,7 +113,7 @@ class ArticlesController extends Controller
         return view('article.index', compact(['pagination', 'articles']));
     }
 
-    public function destory($id)
+    public function destroy($id)
     {
         $article = Article::findOrFail($id);
         $article->delete();

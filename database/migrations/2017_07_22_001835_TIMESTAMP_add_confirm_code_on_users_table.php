@@ -26,6 +26,9 @@ class TIMESTAMPAddConfirmCodeOnUsersTable extends Migration
      */
     public function down()
     {
-
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('confirm_code');
+            $table->dropColumn('activated');
+        });
     }
 }

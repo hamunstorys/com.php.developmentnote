@@ -17,7 +17,6 @@ class CreateArticlesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->text('subject');
             $table->text('content');
-            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
 
@@ -32,6 +31,10 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropForgien('articles_user_id_foreign');
+        });
+
         Schema::drop('articles');
     }
 }

@@ -30,6 +30,11 @@ class CreateArticleCommentTable extends Migration
      */
     public function down()
     {
+        Schema::table('articles_comment', function (Blueprint $table) {
+            $table->dropForgien('article_comment_article_id_foreign');
+            $table->dropForgien('article_comment_comment_id_foreign');
+        });
+
         Schema::dropIfExists('articles_comment');
     }
 }

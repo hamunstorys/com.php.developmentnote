@@ -20,7 +20,7 @@
                 </div>
                 <p class="lead">
                     <!-- Author -->
-                    Posted by {{$article->name}}<br/>
+                    Posted by {{$article->user()->getResults()->name}}<br/>
                     <!-- Date/Time -->
                     Posted on {{$article->updated_at}}
                 </p>
