@@ -12,7 +12,7 @@ class Authority extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'level',
+        'user_id',
         'articles_creatable', 'articles_updatable', 'articles_readable', 'articles_deletable',
         'comments_creatable', 'comments_updatable', 'comments_readable', 'comments_deletable'
     ];
@@ -35,5 +35,4 @@ class Authority extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }

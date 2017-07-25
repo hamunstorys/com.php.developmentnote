@@ -13,6 +13,7 @@ class Article extends Model
     protected $table = 'articles';
 
     protected $fillable = [
+        'user_id',
         'subject',
         'content',
         'name',
@@ -23,6 +24,11 @@ class Article extends Model
     ];
 
     /* Eloquent Relation */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function comments()
     {
         return $this->belongsToMany(Comment::class);

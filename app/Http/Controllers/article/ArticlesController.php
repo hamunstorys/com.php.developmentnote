@@ -12,9 +12,6 @@ use Intervention\Image\Facades\Image;
 class ArticlesController extends Controller
 {
     private $lastArticles;
-    /* $lastArticles maxvalue = 12*/
-    /* $perPage maxvalue = 12*/
-    /* if($pagination value == $perPage*)*/
     private $perPage;
     private $pagination;
 
@@ -65,9 +62,10 @@ class ArticlesController extends Controller
             'subject' => 'required',
             'content' => 'required'
         ]);
-
+        $user = auth()->user();
         $article = new Article;
         $article->fill($request->except('thumbnail'));
+        $user->articles()->save($article);
         if ($article->save()) {
             if ($request->hasFile('thumbnail')) {
                 Storage::makeDirectory('public/articles/thumbnails/' . $article->id);
@@ -108,17 +106,14 @@ class ArticlesController extends Controller
         return redirect(route('article.index'));
     }
 
-
-    public
-    function showLatestArticles($page)
+    public function showLatestArticles($page)
     {
         $pagination = $this->getPagination();
         $articles = Article::get()->forPage($page, $this->getPerPage());
         return view('article.index', compact(['pagination', 'articles']));
     }
 
-    public
-    function destory($id)
+    public function destory($id)
     {
         $article = Article::findOrFail($id);
         $article->delete();

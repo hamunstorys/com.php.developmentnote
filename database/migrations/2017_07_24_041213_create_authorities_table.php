@@ -15,7 +15,6 @@ class CreateAuthoritiesTable extends Migration
     {
         Schema::create('authorities', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('level')->unsigned();
             $table->integer('user_id')->unsigned();
 
             $table->boolean('articles_creatable')->nullable();
