@@ -19,6 +19,7 @@ class EditController extends Controller
         $user = User::findOrFail($id)->first();
         $user->update([
             'name' => $request->input('name'),
+            'email' => $request->input('email'),
             'password' => bcrypt($request->input('password'))
         ]);
 
