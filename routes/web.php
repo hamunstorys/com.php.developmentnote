@@ -84,42 +84,45 @@ Route::group(['middleware' => ['web']], function () {
             'uses' => 'article\ArticlesController@index'
         ]);
 
-        Route::post('/', [
-            'as' => 'article.store',
-            'uses' => 'article\ArticlesController@store'
-        ])->middleware('auth');
+        Route::group(['middleware' => ['auth']], function () {
 
-        Route::get('/create', [
-            'as' => 'article.create',
-            'uses' => 'article\ArticlesController@create'
-        ])->middleware('auth');
+            Route::get('/create', [
+                'as' => 'article.create',
+                'uses' => 'article\ArticlesController@create'
+            ]);
+
+            Route::post('/', [
+                'as' => 'article.store',
+                'uses' => 'article\ArticlesController@store'
+            ]);
+
+            Route::put('/{article}', [
+                'as' => 'article.update',
+                'uses' => 'article\ArticlesController@update'
+            ]);
+
+            Route::delete('/{article}', [
+                'as' => 'article.destroy',
+                'uses' => 'article\ArticlesController@destroy'
+            ]);
+
+            Route::get('/{article}/edit', [
+                'as' => 'article.edit',
+                'uses' => 'article\ArticlesController@edit'
+            ]);
+        });
 
         Route::get('/{article}', [
             'as' => 'article.show',
             'uses' => 'article\ArticlesController@show'
         ]);
 
-        Route::put('/{article}', [
-            'as' => 'article.update',
-            'uses' => 'article\ArticlesController@update'
-        ])->middleware('auth');
-
-        Route::delete('/{article}', [
-            'as' => 'article.destroy',
-            'uses' => 'article\ArticlesController@destroy'
-        ])->middleware('auth');
-
-        Route::get('/{article}/edit', [
-            'as' => 'article.edit',
-            'uses' => 'article\ArticlesController@edit'
-        ])->middleware('auth');
-
         Route::get('/page/{page}', [
             'as' => 'article.showLatestArticles',
             'uses' => 'article\ArticlesController@showLatestArticles'
         ]);
 
-        Route::resource('/comment', 'article\CommentsController')->middleware('auth');
+        Route::resource('/comment', 'article\CommentsController');
     });
 
     Route::prefix('/search')->group(function () {
@@ -128,7 +131,7 @@ Route::group(['middleware' => ['web']], function () {
             'uses' => 'search\SearchArticlesController@store'
         ]);
 
-        Route::get(' / articles / select ={select}&query={query}&page ={page}', [
+        Route::get('/articles/select={select}&query={query}&page={page}', [
             'as' => 'search.articles.show',
             'uses' => 'search\SearchArticlesController@show'
         ]);
