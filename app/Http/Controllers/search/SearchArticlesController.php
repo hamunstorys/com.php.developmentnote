@@ -75,9 +75,7 @@ class SearchArticlesController extends Controller
             case 0:
                 $this->setPagination($searchedArticles, 12);
                 $pagination = $this->getPagination();
-                $articles = Article::get()
-                    ->where(Select::get()->where('value', '=', $select)->first()->query, 'like', $query)
-                    ->forPage($page, $this->getPerPage());
+                $articles = $searchedArticles->forPage($page, $this->getPerPage());
                 return view('article.search.show', compact(['select', 'query', 'pagination', 'articles']));
         }
     }
