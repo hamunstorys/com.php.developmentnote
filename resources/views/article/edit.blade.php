@@ -45,6 +45,10 @@
     </div>
 @stop
 
+@section('footer')
+    @extends('layouts.footer')
+@endsection
+
 @section('js')
     <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>

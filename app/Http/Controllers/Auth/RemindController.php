@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Mail;
 
 class RemindController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     public function create()
     {
         return view('auth.remind');
@@ -29,11 +24,17 @@ class RemindController extends Controller
         $email = $request->get('email');
         $token = str_random(64);
 
-        DB::table('password_resets')->insert([
-            'email' => $email,
-            'token' => $token,
-            'created_at' => Carbon::now()->toDateTimeString()
-        ]);
+        if (DB::table('password_resets')->where('email', '=', $email) == null) {
+            DB::table('password_resets')->insert([
+                'email' => $email,
+                'token' => $token,
+                'created_at' => Carbon::now()->toDateTimeString()
+            ]);
+        } else {
+            DB::table('password_resets')->where('email', '=', $email)->update([
+                'token' => $token,
+            ]);
+        }
 
         Mail::send('auth.emails.reset', compact('token'), function ($message) use ($email) {
             $message->to($email);

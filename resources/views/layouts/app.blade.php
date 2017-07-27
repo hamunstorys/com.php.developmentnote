@@ -40,9 +40,11 @@
                         <a class="nav-link" href="{{route('article.index')}}">포스트 보기<span
                                     class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('article.create')}}">포스트 작성</a>
-                    </li>
+                    @can('create', App\Models\Article\Article::class)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('article.create')}}">포스트 작성</a>
+                        </li>
+                    @endcan
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
@@ -66,13 +68,17 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="{{route('users.edit.update',auth()->user()->__get('id'))}}">
-                                        회원정보 수정
-                                    </a>
                                     <a href="{{route('users.sessions.destroy')}}">
                                         로그아웃
                                     </a>
-                                </li>
+                                    <a href="{{route('users.edit.update',auth()->user()->__get('id'))}}">
+                                        회원정보 수정
+                                    </a>
+                                    <Form method="post"
+                                          action="{{route('users.delete.destroy',auth()->user()->__get('id'))}}">
+                                        <input type="hidden" name="_method" value="delete">
+                                        <input type="submit" class="btn btn-primary" value="회원 탈퇴">
+                                    </Form>
                             </ul>
                         </li>
                     @endif

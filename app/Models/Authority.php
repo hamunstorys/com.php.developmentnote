@@ -12,9 +12,9 @@ class Authority extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'articles_creatable', 'articles_updatable', 'articles_readable', 'articles_deletable',
-        'comments_creatable', 'comments_updatable', 'comments_readable', 'comments_deletable'
+        'user_id', 'administrator',
+        'articles_creatable', 'articles_updatable', 'articles_deletable',
+        'comments_creatable', 'comments_updatable', 'comments_deletable'
     ];
 
     /**
@@ -26,9 +26,9 @@ class Authority extends Model
 
     ];
 
-    protected $casts = [
-        'articles_creatable' => 'boolean', 'articles_updatable' => 'boolean', 'articles_readable' => 'boolean', 'articles_deletable' => 'boolean',
-        'comments_creatable' => 'boolean', 'comments_updatable' => 'boolean', 'comments_readable' => 'boolean', 'comments_deletable' => 'boolean'
+    protected $casts = ['administrator' => 'boolean',
+        'articles_creatable' => 'boolean', 'articles_updatable' => 'boolean', 'articles_deletable' => 'boolean',
+        'comments_creatable' => 'boolean', 'comments_updatable' => 'boolean', 'comments_deletable' => 'boolean'
     ];
 
     public function user()

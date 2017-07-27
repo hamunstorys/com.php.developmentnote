@@ -9,23 +9,6 @@ use Illuminate\Http\Request;
 
 class CommentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,33 +18,32 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'comment' => 'required',
-        ]);
+        if ($request->user()->can('create', Comment::class)) {
 
-        $article = Article::findOrFail($request->get('id'));
-        $user = $request->user();
+            $this->validate($request, [
+                'comment' => 'required',
+            ]);
 
-        $comment = new Comment;
-        $comment->fill([
-            'comment' => $request->comment,
-        ]);
-        $user->comments()->save($comment);
-        $comment->save();
-        $article->comments()->attach($comment);
+            $article = Article::findOrFail($request->get('id'));
+            $user = $request->user();
 
-        flash('댓글이 작성되었습니다.');
-        return redirect()->back();
-    }
+            $comment = new Comment;
+            $comment->fill([
+                'comment' => $request->comment,
+            ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
+            $user->comments()->save($comment);
+            $comment->save();
+            $article->comments()->attach($comment);
+
+            flash('댓글이 작성되었습니다.');
+            return redirect()->back();
+
+        } else {
+
+            flash('승인되지 않은 사용자 행위입니다.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -70,10 +52,15 @@ class CommentsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $comment = Comment::findOrFail($id);
-        return view('article.comment.edit', compact('comment'));
+        if ($request->user()->can('create', $comment)) {
+            return view('article.comment.edit', compact('comment'));
+        } else {
+            flash('승인되지 않은 사용자 행위입니다.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -101,12 +88,16 @@ class CommentsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $comment = Comment::findOrFail($id);
-        $comment->delete();
-
-        flash('댓글이 삭제되었습니다.');
-        return redirect(route('article.index'));
+        if ($request->user()->can('create', $comment)) {
+            $comment->delete();
+            flash('댓글이 삭제되었습니다.');
+            return redirect(route('article.index'));
+        } else {
+            flash('승인되지 않은 사용자 행위입니다.');
+            return redirect()->back();
+        }
     }
 }

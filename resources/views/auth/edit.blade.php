@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container">
         <h1>Edit Profile</h1>
         <hr>
@@ -16,24 +15,26 @@
                 <Form action="{{route('users.edit.update',$user->id)}}" method="post">
                     {{csrf_field()}}
                     <input name="_method" type="hidden" value="PUT">
-                    <div class="form-group">
+                    <div class="form-group {{ $errors->has('name')?'has-error':'' }}">
                         <label class="col-lg-3 control-label">이름:</label>
                         <div class="col-lg-8">
                             <input class="form-control" name="name" type="text" value="{{$user->name}}">
                         </div>
+                        {!! $errors->first('name', '<span class="form-error">:message</span>') !!}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group {{ $errors->has('email')?'has-error':'' }}">
                         <label class="col-lg-3 control-label">Email:</label>
                         <div class="col-lg-8">
-                            <input class="form-control" name="email" type="text" value="{{$user->email}}"
-                                   disabled=disabled>
+                            <input class="form-control" name="email" type="text" value="{{$user->email}}">
                         </div>
+                        {!! $errors->first('email', '<span class="form-error">:message</span>') !!}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group {{ $errors->has('password')?'has-error':'' }}">
                         <label class="col-md-3 control-label">비밀번호:</label>
                         <div class="col-md-8">
                             <input class="form-control" type="password" value="" name="password">
                         </div>
+                        {!! $errors->first('password', '<span class="form-error">:message</span>') !!}
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">비밀번호 확인:</label>

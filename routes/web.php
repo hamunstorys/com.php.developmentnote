@@ -69,6 +69,11 @@ Route::prefix('/auth')->group(function () {
             'as' => 'users.edit.update',
             'uses' => 'auth\EditController@update'
         ]);
+
+        Route::delete('/delete/{id}', [
+            'as' => 'users.delete.destroy',
+            'uses' => 'auth\DeleteController@destroy'
+        ]);
     });
 });
 

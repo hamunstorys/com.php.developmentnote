@@ -33,7 +33,7 @@ class ArticlesController extends Controller
      * Show the given article
      * @return view return blade view index.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $article = Article::findOrFail($id);
         $comments = $article->comments()->get();
@@ -44,10 +44,14 @@ class ArticlesController extends Controller
      * Show the form to create an article
      * @return view return blade view index.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('article.create');
-
+        if ($request->user()->can('create', Article::class)) {
+            return view('article.create');
+        } else {
+            flash('승인되지 않은 사용자 행위입니다.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -79,17 +83,21 @@ class ArticlesController extends Controller
 
         flash('게시물이 작성되었습니다.');
         return redirect(route('article.index'));
-
     }
 
     /**
      * Show the form to edit an article
      * @return view return blade view index.
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $article = Article::findOrFail($id);
-        return view('article.edit', compact('article'));
+        if ($request->user()->can('update', $article)) {
+            return view('article.edit', compact('article'));
+        } else {
+            flash('승인되지 않은 사용자 행위입니다.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -98,6 +106,7 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $this->validate($request, [
             'subject' => 'required',
             'content' => 'required'
@@ -117,17 +126,20 @@ class ArticlesController extends Controller
         return view('article.index', compact(['pagination', 'articles']));
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $article = Article::findOrFail($id);
-        $article->delete();
-
-        flash('게시물이 삭제되었습니다.');
-        return redirect(route('article.index'));
+        if ($request->user()->can('update', $article)) {
+            $article->delete();
+            flash('게시물이 삭제되었습니다.');
+            return redirect(route('article.index'));
+        } else {
+            flash('승인되지 않은 사용자 행위입니다.');
+            return redirect()->back();
+        }
     }
 
-    public
-    function setLastArticles($articles)
+    public function setLastArticles($articles)
     {
         $latestArticles = -1 * $articles;
         if (Article::get()->count() < $articles) {
@@ -140,8 +152,7 @@ class ArticlesController extends Controller
     /**
      * @return mixed
      */
-    public
-    function getLastArticles()
+    public function getLastArticles()
     {
         return $this->lastArticles;
     }

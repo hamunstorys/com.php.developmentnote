@@ -15,7 +15,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['level',
+    protected $fillable = [
         'name', 'email', 'password', 'confirm_code', 'activated',];
     /**
      * The attributes that should be hidden for arrays.
@@ -27,6 +27,11 @@ class User extends Authenticatable
     ];
 
     protected $casts = ['activated' => 'boolean',];
+
+    public function isAdministrator()
+    {
+        return $this->authorities()->first()->administrator === true;
+    }
 
     public function authorities()
     {
@@ -41,16 +46,5 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Article::class);
-    }
-
-    /* level 0 */
-    public function isAdmin()
-    {
-        return ($this->level === 0) ? true : false;
-    }
-
-    public function isGeneral()
-    {
-        return ($this->level === 1) ? true : false;
     }
 }

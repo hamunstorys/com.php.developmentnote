@@ -50,6 +50,10 @@
     </div>
 @stop
 
+@section('footer')
+    @extends('layouts.footer')
+@endsection
+
 @section('js')
     <script src="/vendor/ckeditor/ckeditor.js"></script>
     <script>

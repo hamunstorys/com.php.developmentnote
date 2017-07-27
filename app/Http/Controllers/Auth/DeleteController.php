@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
-class EditController extends Controller
+class deleteController extends Controller
 {
-    public function edit(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
         try {
 
@@ -21,20 +21,11 @@ class EditController extends Controller
             return redirect()->route('article.index');
         }
 
-        $user = User::findOrFail($id);
-        return view('auth.edit', compact('user'));
-    }
-
-    public function update(Request $request, $id)
-    {
         $user = User::findOrFail($id)->first();
-        $user->update([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password'))
-        ]);
+        $user->delete();
+        auth()->logout();
 
-        flash('회원정보가 수정되었습니다.');
+        flash('회원탈퇴가 완료되었습니다.');
         return redirect()->route('index');
     }
 }

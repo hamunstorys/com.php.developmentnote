@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class SearchArticlesController extends Controller
 {
-    /* $perPage maxvalue = 12*/
-    /* if($pagination value == $perPage*)*/
-
     private $perPage;
     private $pagination;
 
