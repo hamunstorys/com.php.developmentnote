@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Article;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Article\Article;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -63,22 +65,26 @@ class ArticlesController extends Controller
     {
         $this->validate($request, [
             'thumbnail' => 'required|mimes:jpeg,bmp,png,svg|max:2048',
-            'subject' => 'required',
+            'subject' => 'required|unique:articles',
             'content' => 'required'
         ]);
         $user = $request->user();
-
-        $article = new Article;
+        $article = new Article();
         $article->fill([
             'subject' => $request->get('subject'),
             'content' => $request->get('content'),
         ]);
         $user->articles()->save($article);
         $article->save();
+        Article::whereSubject($request->get('subject'))->update([
+            'thumbnail' => url('/') . '/storage/photos/' . $request->user()->id . '/articles/thumbnails/' . Article::whereSubject($request->get('subject'))->first()->id . '.jpg'
+        ]);
 
         if ($request->hasFile('thumbnail')) {
-            Storage::makeDirectory('public/articles/thumbnails/' . $article->id);
-            Image::make($request->thumbnail)->resize(384, 288)->save('storage/articles/thumbnails/' . $article->id . '/thumbnail.jpg');
+            if (!File::isDirectory('storage/app/public/photos/articles/thumbnails/'))
+                Storage::makeDirectory('public/photos/' . $request->user()->id . '/articles/thumbnails/');
+
+            Image::make($request->thumbnail)->resize(384, 288)->save('storage/photos/' . $request->user()->id . '/articles/thumbnails/' . $article->id . '.jpg');
         }
 
         flash('게시물이 작성되었습니다.');
@@ -89,7 +95,8 @@ class ArticlesController extends Controller
      * Show the form to edit an article
      * @return view return blade view index.
      */
-    public function edit(Request $request, $id)
+    public
+    function edit(Request $request, $id)
     {
         $article = Article::findOrFail($id);
         if ($request->user()->can('update', $article)) {
@@ -104,7 +111,8 @@ class ArticlesController extends Controller
      * Create an Article in the database
      * @return view return blade view index.
      */
-    public function update(Request $request, $id)
+    public
+    function update(Request $request, $id)
     {
 
         $this->validate($request, [
@@ -119,27 +127,37 @@ class ArticlesController extends Controller
         return redirect(route('article.index'));
     }
 
-    public function showLatestArticles($page)
+    public
+    function showLatestArticles($page)
     {
         $pagination = $this->getPagination();
         $articles = Article::get()->forPage($page, $this->getPerPage());
         return view('article.index', compact(['pagination', 'articles']));
     }
 
-    public function destroy(Request $request, $id)
+    public
+    function destroy(Request $request, $id)
     {
         $article = Article::findOrFail($id);
-        if ($request->user()->can('update', $article)) {
+
+        if ($request->user()->can('destroy', $article)) {
+
+            Storage::delete('public/photos/' . $request->user()->id . '/articles/thumbnails/' . $article->id . '.jpg');
             $article->delete();
+
             flash('게시물이 삭제되었습니다.');
             return redirect(route('article.index'));
+
         } else {
+
             flash('승인되지 않은 사용자 행위입니다.');
             return redirect()->back();
+
         }
     }
 
-    public function setLastArticles($articles)
+    public
+    function setLastArticles($articles)
     {
         $latestArticles = -1 * $articles;
         if (Article::get()->count() < $articles) {
@@ -152,7 +170,8 @@ class ArticlesController extends Controller
     /**
      * @return mixed
      */
-    public function getLastArticles()
+    public
+    function getLastArticles()
     {
         return $this->lastArticles;
     }

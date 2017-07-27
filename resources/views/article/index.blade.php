@@ -21,7 +21,8 @@
                             {{$article->subject}}</a>
                     </h3>
                     <a href="{{ route('article.show',[$id=$article->id]) }}" title="{{$article->subject}}">
-                        {{ Html::image('storage/articles/thumbnails/'.$article->id.'/'.'thumbnail.jpg',$article->id , array('class' => 'img-fluid')) }}
+                        <img src="{{$article->thumbnail}}" class="img-fluid">
+
                     </a>
                 </div>
             @endforeach

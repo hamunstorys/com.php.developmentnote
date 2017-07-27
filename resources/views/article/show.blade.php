@@ -8,19 +8,23 @@
             <div class="col-lg-8">
                 <!-- Title -->
                 <h1 class="mt-4">{{$article->subject}}</h1>
+                @can('delete', App\Models\Article\Article::class)
                 <div class="pull-right">
                     {!! Form::model($article, ['route' => ['article.destroy', $article->id], 'method' => 'DELETE']) !!}
                     {!! Form::submit('삭제', array('class' => 'btn-sm btn-primary')) !!}
                     {!! Form::close() !!}
                 </div>
+                @endcan
+                @can('update', App\Models\Article\Article::class)
                 <div class="pull-right">
                     {!! Form::model($article, ['route' => ['article.edit', $article->id], 'method' => 'GET']) !!}
                     {!! Form::submit('수정', array('class' => 'btn-sm btn-primary')) !!}
                     {!! Form::close() !!}
                 </div>
+                @endcan
                 <p class="lead">
                     <!-- Author -->
-                    Posted by {{$article->user()->getResults()->name}}<br/>
+                    Posted by {{$article->user()->first()->name}}<br/>
                     <!-- Date/Time -->
                     Posted on {{$article->updated_at}}
                 </p>

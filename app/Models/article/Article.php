@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'articles';
 
     protected $fillable = [
         'user_id',
+        'thumbnail',
         'subject',
         'content',
         'name',

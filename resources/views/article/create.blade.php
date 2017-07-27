@@ -66,20 +66,4 @@
 
         CKEDITOR.replace('content', options);
     </script>
-
-    <script language="javascript" type="text/javascript">
-        function openWin(path) {
-
-            ScreenWidth = screen.availWidth;
-            ScreenHeight = screen.availHeight;
-
-            width = 300;
-            height = 300;
-
-            ml = (ScreenWidth - width) / 2;
-            mt = (ScreenHeight - height) / 2;
-
-            window.open(path, '태그 삽입', 'width=' + width + ',height=' + height + ',top=' + mt + ',left=' + ml + ',resizable=no,scrollbars=no');
-        }
-    </script>
 @stop
