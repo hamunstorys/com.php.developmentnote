@@ -31,7 +31,7 @@
                             <label class="control-label" for="content">
                                 Content
                             </label>
-                            <textarea name="content" id="content">{{old('content')}}</textarea>
+                            <textarea name="content" id="content" rows="10">{{old('content')}}</textarea>
                             {!! $errors->first('content', '<span class="form-error">:message</span>') !!}
                         </div>
                         <div class="form-group row" style="text-align: center">

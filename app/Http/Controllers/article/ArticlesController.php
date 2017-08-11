@@ -124,7 +124,7 @@ class ArticlesController extends Controller
         $article->update($request->all());;
 
         flash('게시물이 수정되었습니다.');
-        return redirect(route('article.index'));
+        return redirect(route('article.show',$id));
     }
 
     public

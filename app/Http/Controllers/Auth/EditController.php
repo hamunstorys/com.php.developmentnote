@@ -27,7 +27,7 @@ class EditController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id)->first();
+        $user = User::findOrFail($id);
         $user->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),

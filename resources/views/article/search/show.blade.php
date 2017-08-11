@@ -22,7 +22,8 @@
                             {{$article->subject}}</a>
                     </h3>
                     <a href="{{ route('article.show',[$id=$article->id]) }}" title="{{$article->subject}}">
-                        {{ Html::image('storage/articles/thumbnails/'.$article->id.'/'.'thumbnail.jpg',$article->id , array('class' => 'img-fluid')) }}
+                        <img src="{{$article->thumbnail}}" class="img-fluid">
+
                     </a>
                 </div>
             @endforeach
@@ -34,7 +35,7 @@
                 <ul class="pagination">
                     @for($i = 1; $i <$pagination+1; $i++)
                         <li>
-                            <a href="{{route('search.articles.show',[$select, $query, $i])}}">{{$i}}</a>
+                            <a href="{{route('article.showLatestArticles',$i)}}">{{$i}}</a>
                         </li>
                     @endfor
                 </ul>

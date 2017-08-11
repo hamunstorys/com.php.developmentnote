@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Article\Article;
 use App\Models\Article\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CommentsController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      *
@@ -76,9 +76,10 @@ class CommentsController extends Controller
             'comment' => 'required',
         ]);
         $comment = Comment::findOrFail($id);
-        $comment->fill($request->all());
+        $comment->fill($request->except('name'));
         $comment->save();
         $article = $comment->articles()->first()->id;
+        flash('댓글이 수정되었습니다.');
         return redirect(route('article.show', $article));
     }
 
@@ -92,9 +93,10 @@ class CommentsController extends Controller
     {
         $comment = Comment::findOrFail($id);
         if ($request->user()->can('create', $comment)) {
+            $article = $comment->articles()->first()->id;
             $comment->delete();
             flash('댓글이 삭제되었습니다.');
-            return redirect(route('article.index'));
+            return redirect(route('article.show', $article));
         } else {
             flash('승인되지 않은 사용자 행위입니다.');
             return redirect()->back();

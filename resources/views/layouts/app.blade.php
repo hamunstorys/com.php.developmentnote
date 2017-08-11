@@ -75,8 +75,9 @@
                                         회원정보 수정
                                     </a>
                                     <Form method="post"
-                                          action="{{route('users.delete.destroy',auth()->user()->__get('id'))}}">
-                                        <input type="hidden" name="_method" value="delete">
+                                          action="{{route('users.delete.destroy',auth()->user()->__get('id'))}}" class="text-center">
+                                        {{csrf_field()}}
+                                            <input type="hidden" name="_method" value="delete">
                                         <input type="submit" class="btn btn-primary" value="회원 탈퇴">
                                     </Form>
                             </ul>

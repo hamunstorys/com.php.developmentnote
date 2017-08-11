@@ -26,7 +26,7 @@
                         <label class="control-label " for="message">
                             Content
                         </label>
-                        <textarea id="content" name="content">{{$article->content}}</textarea>
+                        <textarea id="content" name="content" rows="10">{{$article->content}}</textarea>
                         {!! $errors->first('content', '<span class="form-error">:message</span>') !!}
                     </div>
                     <div class="form-group row" style="text-align: center">
